@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EYA Tech — Eklou Yadel AMENDAH | Full-Stack, DevOps &amp; Cybersécurité</title>
+<meta name="description" content="Portfolio d'Eklou Yadel AMENDAH (EYA Tech) — Développeur Full-Stack, ingénieur DevOps et consultant en cybersécurité bancaire basé à Lomé, Togo.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="dark">
+
+<!-- Circuit trace spine that runs behind the whole page -->
+<div class="pcb-spine" aria-hidden="true">
+  <svg class="pcb-spine__svg" viewBox="0 0 100 4000" preserveAspectRatio="none">
+    <path class="pcb-spine__path" d="M50,0 L50,4000" />
+  </svg>
+</div>
+
+<header class="site-header" id="top">
+  <div class="header-inner">
+    <a href="#top" class="logo">
+      <span class="logo__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="3" class="logo__pad"/>
+          <path d="M16 3 V13 M16 19 V29 M3 16 H13 M19 16 H29" class="logo__trace" stroke-width="2"/>
+          <circle cx="16" cy="3" r="1.6" class="logo__node"/>
+          <circle cx="16" cy="29" r="1.6" class="logo__node"/>
+          <circle cx="3" cy="16" r="1.6" class="logo__node"/>
+          <circle cx="29" cy="16" r="1.6" class="logo__node"/>
+        </svg>
+      </span>
+      <span class="logo__text">EYA<span class="logo__text--accent">_</span>Tech</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="#about" data-nav>À propos</a>
+      <a href="#skills" data-nav>Compétences</a>
+      <a href="#experience" data-nav>Expériences</a>
+      <a href="#testimonials" data-nav>Avis</a>
+      <a href="#contact" data-nav>Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le thème clair/sombre">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <svg class="hero__circuit" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+        <g class="hero__circuit-lines">
+          <path d="M0,120 H300 V60 H620 V200 H900 V90 H1200" />
+          <path d="M0,420 H180 V520 H480 V380 H760 V560 H1200" />
+          <path d="M0,650 H260 V700 H540 V600 H1000 V680 H1200" />
+          <path d="M120,0 V150 M620,0 V60 M900,800 V620 M260,800 V650 M540,800 V600" />
+        </g>
+        <g class="hero__circuit-nodes">
+          <circle cx="300" cy="120" r="4"/>
+          <circle cx="620" cy="60" r="4"/>
+          <circle cx="900" cy="200" r="4"/>
+          <circle cx="180" cy="420" r="4"/>
+          <circle cx="480" cy="520" r="4"/>
+          <circle cx="760" cy="380" r="4"/>
+          <circle cx="260" cy="650" r="4"/>
+          <circle cx="540" cy="700" r="4"/>
+          <circle cx="1000" cy="600" r="4"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow"><span class="pulse-dot"></span>Lomé, Togo — Disponible pour vos projets</p>
+      <h1 class="hero__title">
+        Je construis des systèmes
+        <span class="hero__title-line">qui tiennent la charge<span class="hero__caret">_</span></span>
+      </h1>
+      <p class="hero__subtitle">
+        Développeur <strong>Full-Stack</strong>, ingénieur <strong>DevOps</strong> et consultant en
+        <strong>cybersécurité bancaire</strong>. Cinq ans à faire dialoguer le code, l'infrastructure
+        et la sécurité — sans jamais perdre le signal dans le bruit.
+      </p>
+      <div class="hero__cta">
+        <a href="https://wa.me/22892031414" target="_blank" rel="noopener" class="btn btn--primary">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="btn__icon"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.29-1.4a9.9 9.9 0 0 0 4.75 1.21h.01c5.46 0 9.9-4.45 9.9-9.9 0-2.65-1.03-5.13-2.9-7C17.18 3.03 14.7 2 12.04 2Zm0 18.06a8.2 8.2 0 0 1-4.17-1.14l-.3-.18-3.14.83.84-3.06-.2-.31a8.15 8.15 0 0 1-1.26-4.35c0-4.51 3.68-8.19 8.2-8.19 2.19 0 4.25.85 5.8 2.4a8.13 8.13 0 0 1 2.4 5.8c0 4.52-3.68 8.2-8.17 8.2Zm4.48-6.13c-.24-.12-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12-.16.24-.63.8-.78.97-.14.16-.28.18-.53.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.44-1.35-1.68-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.42-.55-.42-.14 0-.3-.02-.46-.02s-.42.06-.64.3c-.22.24-.85.83-.85 2.03 0 1.2.87 2.36.99 2.52.12.16 1.72 2.63 4.17 3.69.58.25 1.04.4 1.39.51.59.19 1.12.16 1.54.1.47-.07 1.45-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.22-.16-.46-.28Z"/></svg>
+          Me contacter sur WhatsApp
+        </a>
+        <a href="#experience" class="btn btn--ghost">Découvrir mes projets</a>
+      </div>
+
+      <dl class="hero__stack" aria-label="Stack technique principale">
+        <div><dt>Backend</dt><dd>PHP · Python</dd></div>
+        <div><dt>Frontend</dt><dd>React</dd></div>
+        <div><dt>Cloud</dt><dd>AWS</dd></div>
+        <div><dt>Orchestration</dt><dd>Kubernetes</dd></div>
+      </dl>
+    </div>
+
+    <a href="#about" class="scroll-cue" aria-label="Défiler vers la suite">
+      <span></span>
+    </a>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="section-head">
+      <p class="section-eyebrow">01 — Trajectoire</p>
+      <h2 class="section-title">De la résistance au routeur, du routeur au repo</h2>
+    </div>
+
+    <div class="about__grid">
+      <div class="about__story">
+        <p>
+          Tout commence au lycée, derrière un fer à souder et une plaque de circuits imprimés :
+          l'électronique m'apprend à lire un système avant de le juger, à suivre un courant du composant
+          à l'effet. Cette rigueur me suit jusqu'à l'université, en licence <strong>Systèmes, Réseaux &amp; Sécurité</strong>,
+          où le circuit devient réseau et la panne devient vulnérabilité.
+        </p>
+        <p>
+          À l'<strong>Académie ADN</strong>, à Lomé, ce langage électrique se traduit en code : développement web
+          et mobile, puis très vite DevOps, parce qu'un bon développeur qui ignore l'infrastructure ne
+          voit qu'une moitié du circuit. Aujourd'hui, cette double lecture — développement et sécurité —
+          me sert notamment auprès d'acteurs du secteur bancaire, où chaque ligne de code porte un enjeu
+          de confiance.
+        </p>
+        <p>
+          En dehors des terminaux : la <strong>musique</strong> pour l'oreille et la précision du rythme,
+          la <strong>salle de sport</strong> et le <strong>taekwondo</strong> pour la discipline — la même
+          discipline qui fait qu'un déploiement se prépare, se répète, et ne s'improvise pas.
+        </p>
+      </div>
+
+      <ul class="about__timeline" aria-label="Parcours résumé">
+        <li>
+          <span class="about__timeline-node"></span>
+          <h3>Électronique</h3>
+          <p>Lycée — bases en circuits, composants et logique matérielle.</p>
+        </li>
+        <li>
+          <span class="about__timeline-node"></span>
+          <h3>Systèmes, Réseaux &amp; Sécurité</h3>
+          <p>Licence universitaire — infrastructures et sécurité des systèmes.</p>
+        </li>
+        <li>
+          <span class="about__timeline-node"></span>
+          <h3>Dev &amp; DevOps</h3>
+          <p>Académie ADN, Togo — développement web/mobile et pratiques DevOps.</p>
+        </li>
+        <li>
+          <span class="about__timeline-node"></span>
+          <h3>Consultant Sécurité Bancaire</h3>
+          <p>+5 ans de projets concrets, du code à l'infrastructure sécurisée.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills" id="skills">
+    <div class="section-head">
+      <p class="section-eyebrow">02 — Composants</p>
+      <h2 class="section-title">La stack, pièce par pièce</h2>
+    </div>
+
+    <div class="skills__groups">
+      <div class="skills__group">
+        <h3>Développement</h3>
+        <div class="badge-row">
+          <span class="badge" data-badge="PHP">PHP</span>
+          <span class="badge" data-badge="Python">Python</span>
+          <span class="badge" data-badge="React">React</span>
+        </div>
+      </div>
+      <div class="skills__group">
+        <h3>Cloud &amp; Ops</h3>
+        <div class="badge-row">
+          <span class="badge" data-badge="AWS">AWS</span>
+          <span class="badge" data-badge="K8s">Kubernetes</span>
+          <span class="badge" data-badge="CI/CD">CI/CD</span>
+        </div>
+      </div>
+      <div class="skills__group">
+        <h3>Sécurité</h3>
+        <div class="badge-row">
+          <span class="badge" data-badge="Sec">Sécurité Bancaire</span>
+          <span class="badge" data-badge="Audit">Audit Systèmes</span>
+        </div>
+      </div>
+      <div class="skills__group">
+        <h3>Savoir-être</h3>
+        <div class="badge-row">
+          <span class="badge badge--soft">Rigueur</span>
+          <span class="badge badge--soft">Créativité</span>
+          <span class="badge badge--soft">Ténacité</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section class="experience" id="experience">
+    <div class="section-head">
+      <p class="section-eyebrow">03 — Journal de bord</p>
+      <h2 class="section-title">Projets &amp; réalisations</h2>
+    </div>
+
+    <div class="filters" id="filters" role="tablist" aria-label="Filtrer les projets">
+      <button class="filter-btn is-active" data-filter="all" role="tab" aria-selected="true">Tout</button>
+      <button class="filter-btn" data-filter="web" role="tab" aria-selected="false">Web</button>
+      <button class="filter-btn" data-filter="devops" role="tab" aria-selected="false">DevOps</button>
+      <button class="filter-btn" data-filter="securite" role="tab" aria-selected="false">Sécurité</button>
+    </div>
+
+    <div class="project-grid" id="project-grid">
+      <article class="project-card" data-category="securite">
+        <div class="project-card__tag">Sécurité</div>
+        <h3>Durcissement d'une plateforme bancaire</h3>
+        <p>Audit de sécurité et mise en conformité d'une application critique pour un acteur du secteur bancaire.</p>
+        <ul class="project-card__meta"><li>Sécurité</li><li>Audit</li><li>Conformité</li></ul>
+      </article>
+      <article class="project-card" data-category="devops">
+        <div class="project-card__tag">DevOps</div>
+        <h3>Orchestration de microservices</h3>
+        <p>Déploiement et supervision d'une architecture microservices sur Kubernetes, avec pipelines CI/CD automatisés.</p>
+        <ul class="project-card__meta"><li>Kubernetes</li><li>AWS</li><li>CI/CD</li></ul>
+      </article>
+      <article class="project-card" data-category="web">
+        <div class="project-card__tag">Web</div>
+        <h3>Application Full-Stack React &amp; PHP</h3>
+        <p>Conception et développement d'une application web complète, du back-end PHP à l'interface React.</p>
+        <ul class="project-card__meta"><li>React</li><li>PHP</li><li>API REST</li></ul>
+      </article>
+      <article class="project-card" data-category="web devops">
+        <div class="project-card__tag">Web · DevOps</div>
+        <h3>Automatisation d'infrastructure cloud</h3>
+        <p>Scripts Python pour l'automatisation du provisioning d'infrastructures sur AWS, intégrés à une interface de suivi.</p>
+        <ul class="project-card__meta"><li>Python</li><li>AWS</li><li>Automatisation</li></ul>
+      </article>
+      <article class="project-card" data-category="securite devops">
+        <div class="project-card__tag">Sécurité · DevOps</div>
+        <h3>Supervision &amp; détection d'incidents</h3>
+        <p>Mise en place d'un système de supervision et d'alertes pour anticiper les incidents de sécurité en production.</p>
+        <ul class="project-card__meta"><li>Monitoring</li><li>Sécurité</li><li>Kubernetes</li></ul>
+      </article>
+      <article class="project-card" data-category="web">
+        <div class="project-card__tag">Web</div>
+        <h3>Application mobile compagnon</h3>
+        <p>Développement d'une application mobile connectée à l'API d'un service existant, pensée mobile-first.</p>
+        <ul class="project-card__meta"><li>Mobile</li><li>React</li><li>API</li></ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="section-head">
+      <p class="section-eyebrow">04 — Retours</p>
+      <h2 class="section-title">Ce qu'on retient de travailler avec EYA</h2>
+    </div>
+
+    <div class="testimonial-grid">
+      <blockquote class="testimonial-card">
+        <p>« Une rigueur rare sur les sujets de sécurité, et une capacité à expliquer des choix techniques
+        complexes en termes simples pour nos équipes métier. »</p>
+        <footer><span class="testimonial-card__name">Responsable IT</span><span class="testimonial-card__role">Secteur bancaire</span></footer>
+      </blockquote>
+      <blockquote class="testimonial-card">
+        <p>« Le déploiement Kubernetes a été livré propre, documenté, et sans surprise en production.
+        Exactement ce qu'on attend d'un profil DevOps. »</p>
+        <footer><span class="testimonial-card__name">Chef de projet</span><span class="testimonial-card__role">Plateforme cloud</span></footer>
+      </blockquote>
+      <blockquote class="testimonial-card">
+        <p>« Réactif, créatif, et toujours prêt à relever un défi technique supplémentaire.
+        Un vrai profil full-stack au sens propre du terme. »</p>
+        <footer><span class="testimonial-card__name">Fondateur</span><span class="testimonial-card__role">Startup Web</span></footer>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact__inner">
+      <div class="section-head">
+        <p class="section-eyebrow">05 — Connexion</p>
+        <h2 class="section-title">Établissons le contact</h2>
+        <p class="contact__lead">
+          Un projet web, une infrastructure à sécuriser, un audit à mener ? Le canal est ouvert.
+        </p>
+      </div>
+
+      <div class="contact__grid">
+        <div class="contact__direct">
+          <a href="https://wa.me/22892031414" target="_blank" rel="noopener" class="contact__link">
+            <span class="contact__link-label">WhatsApp</span>
+            <span class="contact__link-value">+228 92 03 14 14</span>
+          </a>
+          <a href="mailto:eyatech.services@gmail.com" class="contact__link">
+            <span class="contact__link-label">Email</span>
+            <span class="contact__link-value">eyatech.services@gmail.com</span>
+          </a>
+          <p class="contact__location">
+            <span class="pulse-dot"></span> Basé à Lomé, Togo — disponible à distance
+          </p>
+        </div>
+
+        <form class="contact__form" id="contact-form">
+          <div class="form-row">
+            <label for="name">Nom</label>
+            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="vous@exemple.com" required>
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" placeholder="Décrivez votre projet..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--block">Envoyer le message</button>
+          <p class="form-note" id="form-note" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year"></span> EYA Tech — Lomé, Togo. Tous droits réservés.</p>
+  <p class="site-footer__credits">Conçu &amp; développé par Eklou Yadel AMENDAH.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
