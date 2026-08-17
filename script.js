@@ -4,10 +4,72 @@
   /* ---------- Theme toggle ---------- */
   const body = document.body;
   const themeToggle = document.getElementById('theme-toggle');
-  const THEME_KEY = 'eya-theme';
+
+  /* ---------- Calendly: lazy-loaded, theme-matched ----------
+     Performance: Calendly's widget.js + its 700px-tall iframe used to load
+     eagerly with the rest of the page, even for visitors who never scroll
+     down to the booking section. It's now only fetched once the section
+     actually scrolls into view.
+
+     Theming note: Calendly only honors the background_color / text_color /
+     primary_color URL parameters on paid Calendly plans. On the free plan
+     the widget stays Calendly's default white, but the parameters are
+     harmless either way, and this will "just start working" automatically
+     if the account is ever upgraded, with no code changes needed. */
+  const CALENDLY_URLS = {
+    dark: 'https://calendly.com/contact-eyatech?background_color=10151f&text_color=e8edf4&primary_color=00f5b0',
+    light: 'https://calendly.com/contact-eyatech?background_color=ffffff&text_color=0d1b2a&primary_color=0087f5',
+  };
+  let calendlyLoaded = false;
+
+  function updateCalendlyTheme(theme) {
+    // Not loaded yet: nothing to update — it will simply init with
+    // whatever theme is active at the moment it does load.
+    if (!calendlyLoaded) return;
+    const container = document.getElementById('calendly-widget');
+    if (!container) return;
+    const targetUrl = CALENDLY_URLS[theme] || CALENDLY_URLS.dark;
+    const iframe = container.querySelector('iframe');
+    if (iframe) iframe.src = targetUrl;
+  }
+
+  function loadCalendly() {
+    if (calendlyLoaded) return;
+    calendlyLoaded = true;
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    script.onload = () => {
+      const container = document.getElementById('calendly-widget');
+      if (container && window.Calendly) {
+        window.Calendly.initInlineWidget({
+          url: CALENDLY_URLS[currentTheme] || CALENDLY_URLS.dark,
+          parentElement: container,
+        });
+      }
+    };
+    document.body.appendChild(script);
+  }
+
+  const calendlyTrigger = document.getElementById('calendly-widget');
+  if (calendlyTrigger && 'IntersectionObserver' in window) {
+    const calendlyIo = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          loadCalendly();
+          calendlyIo.disconnect();
+        }
+      });
+    }, { rootMargin: '300px 0px' });
+    calendlyIo.observe(calendlyTrigger);
+  } else if (calendlyTrigger) {
+    // No IntersectionObserver support: fall back to loading it right away.
+    loadCalendly();
+  }
 
   function applyTheme(theme){
     body.setAttribute('data-theme', theme);
+    updateCalendlyTheme(theme);
   }
 
   // Respect system preference on first load; no persistence across
@@ -18,28 +80,32 @@
   }
   applyTheme(currentTheme);
 
-  themeToggle.addEventListener('click', () => {
-    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    applyTheme(currentTheme);
-  });
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(currentTheme);
+    });
+  }
 
   /* ---------- Mobile nav ---------- */
   const navToggle = document.getElementById('nav-toggle');
   const mainNav = document.getElementById('main-nav');
 
-  navToggle.addEventListener('click', () => {
-    const isOpen = mainNav.classList.toggle('is-open');
-    navToggle.classList.toggle('is-open', isOpen);
-    navToggle.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  mainNav.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mainNav.classList.remove('is-open');
-      navToggle.classList.remove('is-open');
-      navToggle.setAttribute('aria-expanded', 'false');
+  if (navToggle && mainNav) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = mainNav.classList.toggle('is-open');
+      navToggle.classList.toggle('is-open', isOpen);
+      navToggle.setAttribute('aria-expanded', String(isOpen));
     });
-  });
+
+    mainNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mainNav.classList.remove('is-open');
+        navToggle.classList.remove('is-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
   /* ---------- Custom eased smooth scroll ---------- */
   function easeInOutCubic(t) {
@@ -84,11 +150,11 @@
     });
   });
 
-  /* ---------- Project filters ---------- */
+  /* ---------- Project filters (with keyboard a11y) ---------- */
   const filterBtns = document.querySelectorAll('.filter-btn');
   const projectCards = document.querySelectorAll('.project-card');
 
-  filterBtns.forEach(btn => {
+  filterBtns.forEach((btn, idx) => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected', 'false'); });
       btn.classList.add('is-active');
@@ -101,11 +167,21 @@
         card.classList.toggle('is-hidden', !show);
       });
     });
+
+    btn.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      let nextIdx = e.key === 'ArrowRight' ? idx + 1 : idx - 1;
+      if (nextIdx >= filterBtns.length) nextIdx = 0;
+      if (nextIdx < 0) nextIdx = filterBtns.length - 1;
+      filterBtns[nextIdx].focus();
+      filterBtns[nextIdx].click();
+    });
   });
 
   /* ---------- Scroll reveal ---------- */
   const revealTargets = document.querySelectorAll(
-    '.about__story, .about__timeline li, .spec-sheet, .schematic-wrap, .service-card, .skills__group, .process__step, .project-card, .certs__row, .testimonial-card, .faq__item, .cta-card, .calendly-block'
+    '.about__story, .about__timeline li, .spec-sheet, .schematic-wrap, .status-card, .service-card, .skills__group, .process__step, .project-card, .certs__row, .testimonial-card, .faq__item, .cta-card, .calendly-block'
   );
   revealTargets.forEach(el => el.setAttribute('data-reveal', ''));
 
@@ -123,6 +199,16 @@
   } else {
     revealTargets.forEach(el => el.classList.add('is-visible'));
   }
+
+  /* ---------- Project card detail toggle ---------- */
+  document.querySelectorAll('.project-card__toggle').forEach(btn => {
+    const detail = btn.nextElementSibling;
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      detail.style.maxHeight = isOpen ? null : detail.scrollHeight + 'px';
+    });
+  });
 
   /* ---------- FAQ accordion ---------- */
   document.querySelectorAll('.faq__item').forEach(item => {
@@ -239,7 +325,16 @@
     }
   }
 
-  /* ---------- Language toggle (FR / EN) ---------- */
+  /* ---------- Language toggle (FR / EN) & SEO meta updates ---------- */
+  const pageTitles = {
+    fr: 'EYA Tech — Eklou Yadel AMENDAH | Full-Stack, DevOps & Cybersécurité',
+    en: 'EYA Tech — Eklou Yadel AMENDAH | Full-Stack, DevOps & Cybersecurity',
+  };
+  const pageDescriptions = {
+    fr: 'Portfolio d\u2019Eklou Yadel AMENDAH (EYA Tech) — Développeur Full-Stack, ingénieur DevOps et consultant en cybersécurité bancaire basé à Lomé, Togo.',
+    en: 'Portfolio of Eklou Yadel AMENDAH (EYA Tech) — Full-Stack Developer, DevOps Engineer, and Banking Cybersecurity Consultant based in Lomé, Togo.',
+  };
+
   const translations = {
     fr: {
       'nav.about': 'À propos', 'nav.services': 'Services', 'nav.skills': 'Compétences',
@@ -281,6 +376,10 @@
       'schematic.n3.top': 'Académie ADN', 'schematic.n3.bottom': 'Dev Web · Mobile',
       'schematic.n4.top': '5+ ans terrain', 'schematic.n4.bottom': 'Dev · Full-Stack',
       'schematic.n6.bottom': '→ Consultant &amp; Freelance',
+      'status.cap': 'STATUS — AVAILABILITY.EYA',
+      'status.city': 'Lomé, Togo',
+      'status.overlap.label': 'Chevauchement horaire — Europe (Paris/Londres)',
+      'status.available': 'Disponible pour projets',
       'services.eyebrow.num': '02', 'services.eyebrow.text': 'Services',
       'services.title': 'Trois modules, un seul ingénieur',
       'services.lead': 'Du code à la production, jusqu\u2019à la sécurisation du système : une couverture complète du cycle de vie applicatif.',
@@ -327,6 +426,21 @@
       'experience.p6.tag': 'Web', 'experience.p6.title': 'Application mobile compagnon',
       'experience.p6.desc': 'Développement d\u2019une application mobile connectée à l\u2019API d\u2019un service existant, pensée mobile-first.',
       'experience.p6.m1': 'Mobile',
+      'detail.toggle': 'Voir le détail',
+      'detail.approach': 'Approche',
+      'detail.result': 'Résultat',
+      'experience.p1.approach': 'Audit initial des accès et de la surface d’attaque, priorisation des risques identifiés, puis plan de remédiation mis en œuvre en coordination avec les équipes internes.',
+      'experience.p1.result': 'Détails disponibles sur demande.',
+      'experience.p2.approach': 'Conteneurisation des services existants, définition des manifestes Kubernetes, puis mise en place de pipelines CI/CD pour des déploiements automatisés et traçables.',
+      'experience.p2.result': 'Détails disponibles sur demande.',
+      'experience.p3.approach': 'Conception de l’architecture back-end (API REST en PHP), puis développement de l’interface React consommant cette API, avec tests à chaque étape.',
+      'experience.p3.result': 'Détails disponibles sur demande.',
+      'experience.p4.approach': 'Scripts Python pour automatiser le provisioning des ressources AWS, avec une interface de suivi permettant de visualiser l’état de l’infrastructure en temps réel.',
+      'experience.p4.result': 'Détails disponibles sur demande.',
+      'experience.p5.approach': 'Mise en place d’outils de supervision et de règles d’alerte adaptées, pour détecter les anomalies avant qu’elles n’impactent la production.',
+      'experience.p5.result': 'Détails disponibles sur demande.',
+      'experience.p6.approach': 'Développement mobile-first connecté à l’API existante, avec une attention particulière portée à la fluidité et à la fiabilité de la synchronisation des données.',
+      'experience.p6.result': 'Détails disponibles sur demande.',
       'certs.eyebrow.num': '06', 'certs.eyebrow.text': 'Certifications &amp; veille',
       'certs.title': 'Formation continue',
       'certs.lead': 'Les technologies bougent vite ; le secteur bancaire encore plus vite sur ses exigences. Une veille active fait partie du métier.',
@@ -362,6 +476,7 @@
       'cta.text': 'Rejoignez les acteurs qui font confiance à EYA Tech pour concevoir, déployer et sécuriser leurs projets, du code à l\u2019infrastructure.',
       'cta.btn1': 'Écrire sur WhatsApp',
       'cta.btn2': 'Envoyer un email',
+      'cta.response': 'Réponse généralement sous 24h',
       'footer.rights': 'Tous droits réservés.',
       'footer.tags.title': 'Explorez mes domaines d\u2019expertise',
       'footer.tags.t1': 'Développeur Full-Stack Togo',
@@ -379,6 +494,9 @@
       'footer.tags.t13': 'Consultant DevSecOps',
       'footer.tags.t14': 'Développement Web &amp; Mobile',
       'footer.credits': 'Conçu &amp; développé par Eklou Yadel AMENDAH.',
+      'mobile.cta': 'Écrire sur WhatsApp',
+      'footer.privacy': 'Politique de confidentialité',
+      'skip.link': 'Aller au contenu principal',
     },
     en: {
       'nav.about': 'About', 'nav.services': 'Services', 'nav.skills': 'Skills',
@@ -420,6 +538,10 @@
       'schematic.n3.top': 'ADN Academy', 'schematic.n3.bottom': 'Web · Mobile Dev',
       'schematic.n4.top': '5+ years in the field', 'schematic.n4.bottom': 'Dev · Full-Stack',
       'schematic.n6.bottom': '→ Consultant &amp; Freelance',
+      'status.cap': 'STATUS — AVAILABILITY.EYA',
+      'status.city': 'Lomé, Togo',
+      'status.overlap.label': 'Time overlap — Europe (Paris/London)',
+      'status.available': 'Available for projects',
       'services.eyebrow.num': '02', 'services.eyebrow.text': 'Services',
       'services.title': 'Three modules, one engineer',
       'services.lead': 'From code to production, all the way to securing the system: full coverage of the application lifecycle.',
@@ -466,6 +588,21 @@
       'experience.p6.tag': 'Web', 'experience.p6.title': 'Companion mobile app',
       'experience.p6.desc': 'Development of a mobile app connected to an existing service\u2019s API, built mobile-first.',
       'experience.p6.m1': 'Mobile',
+      'detail.toggle': 'See details',
+      'detail.approach': 'Approach',
+      'detail.result': 'Result',
+      'experience.p1.approach': 'Initial audit of access rights and attack surface, risk prioritization, then a remediation plan carried out in coordination with the internal teams.',
+      'experience.p1.result': 'Details available on request.',
+      'experience.p2.approach': 'Containerized the existing services, defined the Kubernetes manifests, then set up CI/CD pipelines for automated, traceable deployments.',
+      'experience.p2.result': 'Details available on request.',
+      'experience.p3.approach': 'Designed the back-end architecture (REST API in PHP), then built the React interface consuming that API, with testing at every step.',
+      'experience.p3.result': 'Details available on request.',
+      'experience.p4.approach': 'Python scripts to automate AWS resource provisioning, with a monitoring interface to track infrastructure status in real time.',
+      'experience.p4.result': 'Details available on request.',
+      'experience.p5.approach': 'Set up monitoring tools and tailored alert rules to catch anomalies before they affect production.',
+      'experience.p5.result': 'Details available on request.',
+      'experience.p6.approach': 'Mobile-first development connected to the existing API, with close attention paid to smooth, reliable data synchronization.',
+      'experience.p6.result': 'Details available on request.',
       'certs.eyebrow.num': '06', 'certs.eyebrow.text': 'Certifications &amp; learning',
       'certs.title': 'Continuous learning',
       'certs.lead': 'Technology moves fast; the banking sector moves even faster on its requirements. Staying current is part of the job.',
@@ -501,6 +638,7 @@
       'cta.text': 'Join the teams who trust EYA Tech to design, deploy and secure their projects, from code to infrastructure.',
       'cta.btn1': 'Message on WhatsApp',
       'cta.btn2': 'Send an email',
+      'cta.response': 'Usually replies within 24h',
       'footer.rights': 'All rights reserved.',
       'footer.tags.title': 'Explore my areas of expertise',
       'footer.tags.t1': 'Full-Stack Developer Togo',
@@ -518,6 +656,9 @@
       'footer.tags.t13': 'DevSecOps Consultant',
       'footer.tags.t14': 'Web &amp; Mobile Development',
       'footer.credits': 'Designed &amp; built by Eklou Yadel AMENDAH.',
+      'mobile.cta': 'Message on WhatsApp',
+      'footer.privacy': 'Privacy Policy',
+      'skip.link': 'Skip to main content',
     }
   };
 
@@ -540,6 +681,20 @@
       if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
     });
     document.documentElement.setAttribute('lang', lang);
+
+    if (pageTitles[lang]) document.title = pageTitles[lang];
+    const metaDesc = document.getElementById('site-meta-desc');
+    if (metaDesc && pageDescriptions[lang]) metaDesc.setAttribute('content', pageDescriptions[lang]);
+
+    ['og-title', 'twitter-title'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && pageTitles[lang]) el.setAttribute('content', pageTitles[lang]);
+    });
+    ['og-description', 'twitter-description'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && pageDescriptions[lang]) el.setAttribute('content', pageDescriptions[lang]);
+    });
+
     if (langToggle) {
       langToggle.classList.toggle('is-en', lang === 'en');
       langToggle.querySelectorAll('.lang-toggle__opt').forEach(opt => {
@@ -598,6 +753,50 @@
     });
   }
 
+  /* ---------- Status card: live Lomé clock + overlap marker ---------- */
+  const statusClock = document.getElementById('status-clock');
+  const statusNowMarker = document.getElementById('status-now-marker');
+
+  function updateStatusClock() {
+    // Lomé, Togo is GMT+0 year-round (no daylight saving), so UTC time
+    // doubles directly as local Lomé time — no timezone conversion needed.
+    const now = new Date();
+    const hours = now.getUTCHours();
+    const minutes = now.getUTCMinutes();
+
+    if (statusClock) {
+      const hh = String(hours).padStart(2, '0');
+      const mm = String(minutes).padStart(2, '0');
+      statusClock.textContent = `${hh}:${mm}`;
+    }
+
+    if (statusNowMarker) {
+      const pct = ((hours + minutes / 60) / 24) * 100;
+      statusNowMarker.style.left = pct + '%';
+    }
+  }
+
+  if (statusClock || statusNowMarker) {
+    updateStatusClock();
+    setInterval(updateStatusClock, 30000);
+  }
+
+  /* ---------- Contact link protection (WhatsApp + email) ----------
+     Neither the phone number nor the email address is ever written in
+     clear in the HTML — both are base64-encoded and only assembled into
+     a real href once this script runs. Simple bots that just download
+     and text-scan the raw HTML for "wa.me/", "mailto:", or contact-info
+     patterns (the vast majority of scrapers) won't see them; real visitors
+     with JS enabled get normal, instantly clickable links. */
+  document.querySelectorAll('[data-link-b64]').forEach(el => {
+    try {
+      el.href = atob(el.getAttribute('data-link-b64'));
+    } catch (e) {
+      // If decoding fails for any reason, fail silently rather than break the button.
+    }
+  });
+
   /* ---------- Footer year ---------- */
-  document.getElementById('year').textContent = new Date().getFullYear();
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 })();

@@ -1,0 +1,37 @@
+# EYA Tech — robots.txt
+# Autorise les moteurs de recherche (SEO), bloque les robots connus
+# d'aspiration de contenu pour l'entraînement de modèles d'IA.
+#
+# Rappel : robots.txt est une convention respectée volontairement.
+# Ce n'est pas une protection technique — un script qui l'ignore
+# délibérément peut toujours accéder au contenu.
+
+User-agent: *
+Allow: /
+
+# Robots d'entraînement IA connus — bloqués
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+Sitemap: https://TON-DOMAINE.com/sitemap.xml

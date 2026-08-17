@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page introuvable — EYA Tech</title>
+<meta name="robots" content="noindex, follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<link rel="icon" href="assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+
+<style>
+  .error-page{
+    min-height: 92vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding: 6rem var(--pad);
+  }
+  .error-page__code{
+    font-family: var(--font-mono); font-weight:700;
+    font-size: clamp(4rem, 14vw, 8rem);
+    color: var(--accent-2);
+    line-height:1;
+  }
+  .error-page__terminal{
+    margin-top: 1.5rem;
+    font-family: var(--font-mono); font-size: .95rem;
+    color: var(--ink-dim);
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 1rem 1.4rem;
+    text-align:left;
+  }
+  .error-page__terminal .prompt{ color: var(--accent-2); }
+  .error-page__title{ font-size: 1.3rem; color: var(--ink); margin: 1.6rem 0 .6rem; }
+  .error-page__text{ color: var(--ink-dim); max-width: 46ch; margin-bottom: 2rem; }
+</style>
+</head>
+<body data-theme="dark">
+
+<div class="pcb-spine" aria-hidden="true">
+  <svg class="pcb-spine__svg" viewBox="0 0 100 4000" preserveAspectRatio="none">
+    <path class="pcb-spine__path" d="M50,0 L50,4000" />
+  </svg>
+</div>
+
+<header class="site-header" id="top">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo__mark"><img src="assets/logo-icon.png" alt="EYA Tech" width="32" height="32"></span>
+      <span class="logo__text">EYA<span class="logo__text--accent">_</span>Tech</span>
+    </a>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer le thème clair/sombre">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="4.2"/>
+        <path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>
+      </svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main class="error-page">
+  <div class="error-page__code">404</div>
+  <div class="error-page__terminal">
+    <span class="prompt">eya@eya-tech:~$</span> curl cette-page<br>
+    curl: (404) Route introuvable sur le serveur
+  </div>
+  <h1 class="error-page__title">Cette page n'existe pas</h1>
+  <p class="error-page__text">Le lien est peut-être obsolète, ou l'adresse mal orthographiée. Le reste du site, lui, fonctionne très bien.</p>
+  <a href="index.html" class="btn btn--primary">Retour à l'accueil</a>
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__bottom">
+      <p class="site-footer__copy">© <span id="year"></span> EYA Tech — Lomé, Togo. Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>
+
+<script defer data-domain="TON-DOMAINE.com" src="https://plausible.io/js/script.js"></script>
+<script>
+  const themeToggle = document.getElementById('theme-toggle');
+  const body = document.body;
+  let currentTheme = 'dark';
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    currentTheme = 'light';
+  }
+  body.setAttribute('data-theme', currentTheme);
+  themeToggle.addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    body.setAttribute('data-theme', currentTheme);
+  });
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
